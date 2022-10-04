@@ -8,6 +8,7 @@
 #backend folder
 backend/node_modules
 yarn.lock
+backend/.env
 
 # testing
 /coverage
@@ -27,3 +28,5 @@ yarn-debug.log*
 yarn-error.log*
 
 notes.txt
+
+.gitignore
