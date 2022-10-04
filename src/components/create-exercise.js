@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'
+import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
 export default class CreateExercise extends Component {
 
@@ -26,10 +27,15 @@ export default class CreateExercise extends Component {
 
     // a lifecycle that is automatically called at different points
     componentDidMount() {
-        this.setState({
-            users: ['test user', 'another user'],
-            username: 'test user'
-        })
+        axios.get('http://localhost:5000/users')
+            .then(res => {
+                if (res.data.length > 0) {
+                    this.setState({
+                        users: res.data.map(user => user.username),
+                        username: res.data[0].username //automatically set to the first user in the DB
+                    })
+                }
+            })
     }
 
     // gets the value from the page
@@ -65,12 +71,15 @@ export default class CreateExercise extends Component {
             username: this.state.username,
             description: this.state.description,
             duration: this.state.duration,
-            data: this.state.date
+            date: this.state.date
         }
 
         console.log(exercise);
 
-        window.location = '/'
+        axios.post('http://localhost:5000/exercises/add', exercise)
+            .then(res => console.log(res.data));
+
+        // window.location = '/'
     }
 
     render() {
